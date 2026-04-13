@@ -24,6 +24,10 @@ import {
 import { FilePreviewer } from "../../apps/desktop/src/components/FilePreviewer";
 import "./AppShell.css";
 
+/// <reference types="vite/client" />
+/// <reference types="react" />
+/// <reference types="react-dom" />
+
 interface DataInfo {
     type: "Resident" | "NonResident";
     value: any;
@@ -106,7 +110,7 @@ export default function AppShell() {
 
             if (payload.record) {
                 const record = payload.record;
-                setFileSystem((prev) => {
+                setFileSystem((prev: Record<number, MftNode>) => {
                     const newState = { ...prev };
 
                     if (!newState[record.mft_id]) {
@@ -115,10 +119,7 @@ export default function AppShell() {
                         newState[record.mft_id] = { ...newState[record.mft_id], ...record };
                     }
 
-                    if (
-                        record.parent_mft_id !== undefined &&
-                        record.parent_mft_id !== record.mft_id
-                    ) {
+                    if (record.parent_mft_id !== undefined && record.parent_mft_id !== record.mft_id) {
                         if (!newState[record.parent_mft_id]) {
                             newState[record.parent_mft_id] = {
                                 mft_id: record.parent_mft_id,
@@ -139,13 +140,13 @@ export default function AppShell() {
                 });
 
                 if (payload.current_file && payload.current_file !== "הסריקה הושלמה") {
-                    setLogs((prev) => [`[FOUND] ${payload.current_file}`, ...prev].slice(0, 100));
+                    setLogs((prev: string[]) => [`[FOUND] ${payload.current_file}`, ...prev].slice(0, 100));
                 }
             }
 
             if (payload.percentage >= 100) {
                 setIsScanning(false);
-                setLogs((prev) => ["[SYSTEM] Scan finished.", ...prev]);
+                setLogs((prev: string[]) => [`[SYSTEM] Scan completed.`, ...prev]);
             }
         });
 
@@ -203,7 +204,7 @@ export default function AppShell() {
             setCurrentSessionId(sessionId);
             await syncFromDb(sessionId);
         } catch (e: any) {
-            setLogs((prev) => [`[ERROR] ${e?.message || e}`, ...prev]);
+            setLogs((prev: string[]) => [`[ERROR] ${e?.message || e}`, ...prev]);
             setIsScanning(false);
         }
     }
@@ -211,7 +212,7 @@ export default function AppShell() {
     async function syncFromDb(sessionId: number) {
         if (!isTauri) return;
 
-        setLogs((prev) => [
+        setLogs((prev: string[]) => [
             `[SYSTEM] Syncing final results from database (Session ${sessionId})...`,
             ...prev
         ]);
@@ -219,7 +220,7 @@ export default function AppShell() {
         try {
             const artifacts = (await invoke("get_artifacts", { sessionId })) as any[];
 
-            setFileSystem((prev) => {
+            setFileSystem((prev: Record<number, MftNode>) => {
                 const newState = { ...prev };
 
                 artifacts.forEach((art) => {
@@ -260,14 +261,14 @@ export default function AppShell() {
                 return newState;
             });
 
-            setLogs((prev) => ["[SUCCESS] Sync complete.", ...prev]);
+            setLogs((prev: string[]) => ["[SUCCESS] Sync complete.", ...prev]);
         } catch (e: any) {
-            setLogs((prev) => [`[ERROR] Sync failed: ${e}`, ...prev]);
+            setLogs((prev: string[]) => [`[ERROR] Sync failed: ${e}`, ...prev]);
         }
     }
 
     const toggleNode = (id: number) => {
-        setExpandedNodes((prev) => {
+        setExpandedNodes((prev: Set<number>) => {
             const next = new Set(prev);
             if (next.has(id)) next.delete(id);
             else next.add(id);
@@ -333,14 +334,14 @@ export default function AppShell() {
                             className="node-children"
                         >
                             {node.children
-                                .sort((a, b) => {
+                                .sort((a: number, b: number) => {
                                     const nodeA = fileSystem[a];
                                     const nodeB = fileSystem[b];
                                     if (nodeA?.is_directory && !nodeB?.is_directory) return -1;
                                     if (!nodeA?.is_directory && nodeB?.is_directory) return 1;
                                     return (nodeA?.filename || "").localeCompare(nodeB?.filename || "");
                                 })
-                                .map((childId) => renderTreeNode(childId, depth + 1))}
+                                .map((childId: number) => renderTreeNode(childId, depth + 1))}
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -364,104 +365,171 @@ export default function AppShell() {
 
                 {isTauri && (
                     <div className="titlebar-right">
-                        <button className="titlebar-btn" type="button" onClick={handleMinimize}>
+                        <button className="titlebar-btn" type="button" onClick={handleMinimize} title="מזער">
                             <Minus size={16} />
                         </button>
-                        <button className="titlebar-btn" type="button" onClick={handleToggleMaximize}>
+                        <button className="titlebar-btn" type="button" onClick={handleToggleMaximize} title={isMaximized ? "שחזר" : "הגדל"}>
                             {isMaximized ? <Copy size={14} /> : <Square size={14} />}
                         </button>
-                        <button className="titlebar-btn titlebar-btn-close" type="button" onClick={handleClose}>
+                        <button className="titlebar-btn titlebar-btn-close" type="button" onClick={handleClose} title="סגור">
                             <X size={16} />
                         </button>
                     </div>
                 )}
             </div>
 
-            <div className="app-shell">
+            <div className="app-shell" style={{ direction: 'rtl' }}>
                 <aside className="side-nav">
                     <div className="nav-brand">
-                        <Database className="brand-icon" />
-                        <span>PXR</span>
+                        <Activity className="brand-icon" />
+                        <span>PHOENIX</span>
                     </div>
                     <div className="nav-items">
-                        <div className="nav-item active"><Activity size={18} /></div>
-                        <div className="nav-item"><Search size={18} /></div>
-                        <div className="nav-item"><Terminal size={18} /></div>
-                        <div className="nav-item"><Cpu size={18} /></div>
+                        <div className="nav-item active"><Database size={20} /></div>
+                        <div className="nav-item"><Search size={20} /></div>
+                        <div className="nav-item"><Download size={20} /></div>
+                        <div className="nav-item"><Terminal size={20} /></div>
+                    </div>
+                    <div className="nav-footer">
+                        <Cpu size={20} className="text-dim" />
                     </div>
                 </aside>
 
                 <main className="main-content">
                     <header className="main-header">
-                        <div>
-                            <h1 className="page-title">PhoenixRecover NTFS MVP</h1>
+                        <div className="header-left">
+                            <h1 className="page-title">PHOENIX RECOVER / NTFS ANALYZER</h1>
                             <div className="status-badge">
-                                <span className={`status-dot ${isScanning ? "pulse" : ""}`}></span>
-                                <span>{isScanning ? "Scanning..." : "Ready"}</span>
-                                {currentSessionId && <span>Session #{currentSessionId}</span>}
+                                <div className={`status-dot ${isScanning ? 'pulse' : ''}`} />
+                                {isScanning ? "מבצע סריקת כונן..." : "מערכת מוכנה"}
                             </div>
                         </div>
-
                         <div className="header-controls">
                             <div className="input-field">
-                                <label>SCAN PATH</label>
-                                <input value={scanPath} onChange={(e) => setScanPath(e.target.value)} />
+                                <label>כונן מקור</label>
+                                <input
+                                    type="text"
+                                    value={scanPath}
+                                    onChange={(e) => setScanPath(e.target.value)}
+                                    placeholder="\\\\.\\C: or disk.img"
+                                />
                             </div>
                             <div className="input-field">
-                                <label>SAVE PATH (Optional)</label>
-                                <input value={savePath} onChange={(e) => setSavePath(e.target.value)} />
+                                <label>נתיב שחזור</label>
+                                <input
+                                    type="text"
+                                    value={savePath}
+                                    onChange={(e) => setSavePath(e.target.value)}
+                                    placeholder="תיקיית פלט..."
+                                />
                             </div>
                             <button
-                                className={`action-btn ${isScanning ? "disabled" : ""}`}
+                                className={`action-btn ${isScanning ? 'disabled' : ''}`}
                                 onClick={handleStartScan}
                                 disabled={isScanning}
                             >
-                                {isScanning ? "SCANNING..." : "START SCAN"}
+                                {isScanning ? "סורק..." : "התחל סריקה"}
                             </button>
+                            {currentSessionId && !isScanning && (
+                                <button
+                                    className="action-btn secondary"
+                                    onClick={() => syncFromDb(currentSessionId)}
+                                >
+                                    רענון מה-DB
+                                </button>
+                            )}
                         </div>
                     </header>
 
-                    <div className="dashboard-grid">
-                        <section className="panel">
+                    <div className="dashboard-grid glass">
+                        <section className="panel tree-panel">
                             <div className="panel-header">
-                                <Folder size={14} />
-                                <h2>Recovered File Tree</h2>
+                                <Folder size={16} />
+                                <h2>היררכיית קבצים</h2>
                             </div>
                             <div className="panel-content tree-viewport">
-                                {renderTreeNode(5)}
-                            </div>
-                        </section>
-
-                        <section className="panel">
-                            <div className="panel-header">
-                                <FileText size={14} />
-                                <h2>Preview / Logs</h2>
-                            </div>
-                            <div className="panel-content">
-                                {selectedFile ? (
-                                    <FilePreviewer
-                                        file={{
-                                            mft_id: selectedFile.mft_id,
-                                            filename: selectedFile.filename || "unknown",
-                                            mime: selectedFile.mime_type
-                                        }}
-                                        drive={scanPath}
-                                    />
+                                {Object.keys(fileSystem).length > 0 ? (
+                                    // Find potential roots (nodes without parents or parent not in filesystem)
+                                    Object.keys(fileSystem).filter(id => {
+                                        const node = fileSystem[parseInt(id)];
+                                        return node.parent_mft_id === 0 || !fileSystem[node.parent_mft_id];
+                                    }).map(id => renderTreeNode(parseInt(id)))
                                 ) : (
-                                    <div className="log-console">
-                                        {logs.map((log, idx) => (
-                                            <div key={idx} className="log-line">{log}</div>
-                                        ))}
-                                        {progress && (
-                                            <div className="progress-box">
-                                                <div>Progress: {progress.percentage.toFixed(1)}%</div>
-                                                <div>Files Found: {progress.files_found}</div>
-                                            </div>
-                                        )}
+                                    <div className="empty-state">
+                                        <Database size={48} className="text-dim shadow-icon" />
+                                        <p>אין נתונים. התחל סריקה כדי לראות קבצים.</p>
                                     </div>
                                 )}
                             </div>
                         </section>
+
+                        <div className="right-stack">
+                            {selectedFile ? (
+                                <section className="panel preview-panel active">
+                                    <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Eye size={16} />
+                                            <h2>תצוגה מקדימה</h2>
+                                        </div>
+                                        <button
+                                            onClick={() => setSelectedFile(null)}
+                                            style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer' }}
+                                        >
+                                            סגור X
+                                        </button>
+                                    </div>
+                                    <div className="panel-content">
+                                        <FilePreviewer
+                                            file={{
+                                                mft_id: selectedFile.mft_id,
+                                                filename: selectedFile.filename || "unknown",
+                                                mime: selectedFile.mime_type
+                                            }}
+                                            drive={scanPath}
+                                        />
+                                    </div>
+                                </section>
+                            ) : (
+                                <section className="panel stats-panel">
+                                    <div className="panel-header">
+                                        <Activity size={16} />
+                                        <h2>סטטיסטיקת סריקה</h2>
+                                    </div>
+                                    <div className="panel-content stats-grid">
+                                        <div className="stat-card">
+                                            <label>התקדמות</label>
+                                            <div className="stat-value">{(progress?.percentage || 0).toFixed(1)}%</div>
+                                            <div className="progress-bar-bg">
+                                                <motion.div
+                                                    className="progress-bar-fill"
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${progress?.percentage || 0}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="stat-card">
+                                            <label>קבצים שזוהו</label>
+                                            <div className="stat-value">{progress?.files_found || 0}</div>
+                                        </div>
+                                    </div>
+                                </section>
+                            )}
+
+                            <section className="panel log-panel">
+                                <div className="panel-header">
+                                    <Terminal size={16} />
+                                    <h2>יומן מערכת</h2>
+                                </div>
+                                <div className="panel-content log-viewport">
+                                    {logs.map((log, i) => (
+                                        <div key={i} className="log-entry">
+                                            <span className="log-time">[{new Date().toLocaleTimeString()}]</span>
+                                            <span className="log-text">{log}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        </div>
                     </div>
                 </main>
             </div>
