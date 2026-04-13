@@ -43,10 +43,29 @@
 
 .custom-titlebar {
   -webkit-app-region: drag;
+  app-region: drag;
 }
 
-.custom-titlebar button {
+.titlebar-right {
   -webkit-app-region: no-drag;
+  app-region: no-drag;
+  position: relative;
+  z-index: 20;
+}
+
+.custom-titlebar button,
+.titlebar-btn,
+.window-control-btn,
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.titlebar-btn,
+.window-control-btn {
+  position: relative;
+  z-index: 21;
+  pointer-events: auto;
 }
 
 [data-theme="light"] {

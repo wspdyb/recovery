@@ -2,6 +2,9 @@ import { useState, useEffect, useMemo } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { FileImage, FileText, FileVideo, FileAudio, FileCode, Shield, FileArchive } from "lucide-react";
 
+// Check if we are running inside Tauri
+const isTauri = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
+
 interface FilePreviewerProps {
     file: {
         mft_id: number;
@@ -24,6 +27,13 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
     useEffect(() => {
         setLoading(true);
         setError(null);
+        
+        if (!isTauri) {
+            setError("נכשל בטעינת נתונים בינאריים (מצב דפדפן)");
+            setLoading(false);
+            return;
+        }
+
         invoke<number[]>("get_file_preview_data", { mftId: file.mft_id, drive })
             .then((data) => {
                 setHexData(new Uint8Array(data));
@@ -65,8 +75,8 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
     };
 
     return (
-        <div className="file-previewer" style={{ direction: 'rtl' }}>
-            <div className="preview-header" style={{ marginBottom: '15px', borderBottom: '1px solid #333', paddingBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="file-previewer" style={{ direction: 'rtl', display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <div className="preview-header" style={{ marginBottom: '15px', borderBottom: '1px solid #333', paddingBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
                 <div style={{ color: '#0078d4' }}>{getIconForMime()}</div>
                 <div>
                     <h3 style={{ margin: 0, color: '#fff', fontSize: '1.1rem' }}>{file.filename}</h3>
@@ -74,14 +84,14 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
                 </div>
             </div>
 
-            <div className="preview-content" style={{ minHeight: '300px', backgroundColor: '#111', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div className="preview-content" style={{ flex: 1, minHeight: '150px', backgroundColor: '#111', borderRadius: '8px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 {/* 1. Images */}
                 {mime.startsWith('image/') && (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
                         <img
                             src={streamUrl}
                             alt={file.filename}
-                            style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'contain', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}
+                            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}
                         />
                     </div>
                 )}
@@ -93,7 +103,7 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
                             controls
                             autoPlay={false}
                             src={streamUrl}
-                            style={{ width: '100%', maxHeight: '400px', outline: 'none' }}
+                            style={{ width: '100%', maxHeight: '100%', outline: 'none' }}
                         >
                             הדפדפן שלך לא תומך בנגינת קובץ זה.
                         </video>
@@ -104,14 +114,14 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
                 {mime === 'application/pdf' && (
                     <iframe
                         src={streamUrl}
-                        style={{ width: '100%', height: '500px', border: 'none' }}
+                        style={{ width: '100%', height: '100%', border: 'none' }}
                         title="PDF Preview"
                     />
                 )}
 
                 {/* 4. Text */}
                 {mime.startsWith('text/') && hexData && (
-                    <div className="text-preview" style={{ padding: '20px', maxHeight: '400px', overflow: 'auto' }}>
+                    <div className="text-preview" style={{ padding: '20px', height: '100%', overflow: 'auto' }}>
                         <pre style={{ margin: 0, color: '#d4d4d4', fontFamily: 'monospace', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>
                             {new TextDecoder().decode(hexData)}
                         </pre>
@@ -120,18 +130,18 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
 
                 {/* 5. Generic Category Placeholder */}
                 {!mime.startsWith('video/') && !mime.startsWith('audio/') && !mime.startsWith('image/') && mime !== 'application/pdf' && !mime.startsWith('text/') && (
-                    <div style={{ padding: '60px', textAlign: 'center', color: '#666', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
-                        <div style={{ opacity: 0.3 }}>{getIconForMime()}</div>
+                    <div style={{ padding: '20px', textAlign: 'center', color: '#666', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '15px', height: '100%' }}>
+                        <div style={{ opacity: 0.3, transform: 'scale(2)' }}>{getIconForMime()}</div>
                         <div>
-                            <p style={{ color: '#aaa', fontWeight: '600' }}>אין תצוגה מקדימה חזותית</p>
-                            <p style={{ fontSize: '0.8rem' }}>לחץ על נתוני ה-Hex למטה לחקירה ידנית</p>
+                            <p style={{ color: '#aaa', fontWeight: '600', margin: '0 0 5px 0' }}>אין תצוגה מקדימה חזותית</p>
+                            <p style={{ fontSize: '0.8rem', margin: 0 }}>לחץ על נתוני ה-Hex למטה לחקירה ידנית</p>
                         </div>
                     </div>
                 )}
             </div>
 
             {/* 6. Professional Hex Viewer */}
-            <div className="hex-viewer-section" style={{ marginTop: '20px' }}>
+            <div className="hex-viewer-section" style={{ marginTop: '15px', flexShrink: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Shield size={14} style={{ color: '#0078d4' }} />
@@ -140,14 +150,14 @@ export const FilePreviewer = ({ file, drive }: FilePreviewerProps) => {
                     {loading && <span className="pulse" style={{ fontSize: '0.8rem', color: '#0078d4' }}>קורא סקטורים...</span>}
                 </div>
 
-                {error && <div style={{ color: '#ff4d4d', fontSize: '0.8rem', padding: '10px', backgroundColor: 'rgba(255,0,0,0.1)', borderRadius: '4px' }}>{error}</div>}
+                {error && <div style={{ color: '#ff4d4d', fontSize: '0.8rem', padding: '10px', backgroundColor: 'rgba(255,0,0,0.1)', borderRadius: '4px', marginBottom: '10px' }}>{error}</div>}
 
                 <div className="hex-grid" style={{
                     backgroundColor: '#050505',
                     padding: '15px',
                     borderRadius: '4px',
                     border: '1px solid #222',
-                    maxHeight: '300px',
+                    height: '150px',
                     overflowY: 'auto',
                     fontSize: '12px'
                 }}>
