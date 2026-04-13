@@ -1,0 +1,27 @@
+# GitHub Actions CI
+
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+    - name: Check
+      run: cargo check
+    - name: Test
+      run: cargo test
+    - name: Clippy
+      run: cargo clippy -- -D warnings
+    - name: Format
+      run: cargo fmt --check

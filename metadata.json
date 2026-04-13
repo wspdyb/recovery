@@ -1,0 +1,5 @@
+{
+  "name": "PhoenixRecover",
+  "description": "מתקדם לשחזור מידע וחקירה פורנזית, מבוסס Rust ו-Tauri.",
+  "requestFramePermissions": []
+}

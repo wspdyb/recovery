@@ -1,0 +1,1249 @@
+[
+  {
+    "name": "JPEG Image",
+    "extension": "jpg",
+    "magic": [
+      255,
+      216,
+      255
+    ],
+    "offset": 0,
+    "default_size": 5242880,
+    "category": "Image",
+    "mime": "image/jpeg"
+  },
+  {
+    "name": "PNG Image",
+    "extension": "png",
+    "magic": [
+      137,
+      80,
+      78,
+      71,
+      13,
+      10,
+      26,
+      10
+    ],
+    "offset": 0,
+    "default_size": 2097152,
+    "category": "Image",
+    "mime": "image/png"
+  },
+  {
+    "name": "GIF Image",
+    "extension": "gif",
+    "magic": [
+      71,
+      73,
+      70,
+      56,
+      57,
+      97
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Image",
+    "mime": "image/gif"
+  },
+  {
+    "name": "WebP Image",
+    "extension": "webp",
+    "magic": [
+      82,
+      73,
+      70,
+      70,
+      0,
+      0,
+      0,
+      0,
+      87,
+      69,
+      66,
+      80
+    ],
+    "offset": 0,
+    "default_size": 2097152,
+    "category": "Image",
+    "mime": "image/webp"
+  },
+  {
+    "name": "BMP Image",
+    "extension": "bmp",
+    "magic": [
+      66,
+      77
+    ],
+    "offset": 0,
+    "default_size": 5242880,
+    "category": "Image",
+    "mime": "image/bmp"
+  },
+  {
+    "name": "TIFF Image (LE)",
+    "extension": "tiff",
+    "magic": [
+      73,
+      73,
+      42,
+      0
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Image",
+    "mime": "image/tiff"
+  },
+  {
+    "name": "TIFF Image (BE)",
+    "extension": "tiff",
+    "magic": [
+      77,
+      77,
+      0,
+      42
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Image",
+    "mime": "image/tiff"
+  },
+  {
+    "name": "ICO Icon",
+    "extension": "ico",
+    "magic": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "offset": 0,
+    "default_size": 102400,
+    "category": "Image",
+    "mime": "image/x-icon"
+  },
+  {
+    "name": "PSD Photoshop",
+    "extension": "psd",
+    "magic": [
+      56,
+      66,
+      80,
+      83
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Image",
+    "mime": "image/vnd.adobe.photoshop"
+  },
+  {
+    "name": "HEIC Image",
+    "extension": "heic",
+    "magic": [
+      0,
+      0,
+      0,
+      0,
+      102,
+      116,
+      121,
+      112,
+      104,
+      101,
+      105,
+      99
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Image",
+    "mime": "image/heic"
+  },
+  {
+    "name": "SVG Vector",
+    "extension": "svg",
+    "magic": [
+      60,
+      115,
+      118,
+      103
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Image",
+    "mime": "image/svg+xml"
+  },
+  {
+    "name": "PDF Document",
+    "extension": "pdf",
+    "magic": [
+      37,
+      80,
+      68,
+      70
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Document",
+    "mime": "application/pdf"
+  },
+  {
+    "name": "MS Word (OpenXML)",
+    "extension": "docx",
+    "magic": [
+      80,
+      75,
+      3,
+      4
+    ],
+    "offset": 0,
+    "default_size": 20971520,
+    "category": "Document",
+    "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  },
+  {
+    "name": "MS Excel (OpenXML)",
+    "extension": "xlsx",
+    "magic": [
+      80,
+      75,
+      3,
+      4
+    ],
+    "offset": 0,
+    "default_size": 20971520,
+    "category": "Document",
+    "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  },
+  {
+    "name": "MS PPT (OpenXML)",
+    "extension": "pptx",
+    "magic": [
+      80,
+      75,
+      3,
+      4
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Document",
+    "mime": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+  },
+  {
+    "name": "MS Office (Legacy)",
+    "extension": "doc",
+    "magic": [
+      208,
+      207,
+      17,
+      224,
+      161,
+      177,
+      26,
+      225
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Document",
+    "mime": "application/msword"
+  },
+  {
+    "name": "RTF Document",
+    "extension": "rtf",
+    "magic": [
+      123,
+      92,
+      114,
+      116,
+      102
+    ],
+    "offset": 0,
+    "default_size": 5242880,
+    "category": "Document",
+    "mime": "application/rtf"
+  },
+  {
+    "name": "EPUB E-book",
+    "extension": "epub",
+    "magic": [
+      80,
+      75,
+      3,
+      4,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      109,
+      105,
+      109,
+      101,
+      116,
+      121,
+      112,
+      101,
+      97,
+      112,
+      112,
+      108,
+      105,
+      99,
+      97,
+      116,
+      105,
+      111,
+      110,
+      47,
+      101,
+      112,
+      117,
+      98,
+      43,
+      122,
+      105,
+      112
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Document",
+    "mime": "application/epub+zip"
+  },
+  {
+    "name": "PostScript",
+    "extension": "ps",
+    "magic": [
+      37,
+      33,
+      80,
+      83,
+      45,
+      65,
+      100,
+      111,
+      98,
+      101
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Document",
+    "mime": "application/postscript"
+  },
+  {
+    "name": "ZIP Archive",
+    "extension": "zip",
+    "magic": [
+      80,
+      75,
+      3,
+      4
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Archive",
+    "mime": "application/zip"
+  },
+  {
+    "name": "RAR Archive v5",
+    "extension": "rar",
+    "magic": [
+      82,
+      97,
+      114,
+      33,
+      26,
+      7,
+      1
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Archive",
+    "mime": "application/vnd.rar"
+  },
+  {
+    "name": "RAR Archive v1.5+",
+    "extension": "rar",
+    "magic": [
+      82,
+      97,
+      114,
+      33,
+      26,
+      7,
+      0
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Archive",
+    "mime": "application/vnd.rar"
+  },
+  {
+    "name": "7-Zip Archive",
+    "extension": "7z",
+    "magic": [
+      55,
+      122,
+      188,
+      175,
+      39,
+      28
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Archive",
+    "mime": "application/x-7z-compressed"
+  },
+  {
+    "name": "GZIP Archive",
+    "extension": "gz",
+    "magic": [
+      31,
+      139
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Archive",
+    "mime": "application/gzip"
+  },
+  {
+    "name": "BZIP2 Archive",
+    "extension": "bz2",
+    "magic": [
+      66,
+      90,
+      104
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Archive",
+    "mime": "application/x-bzip2"
+  },
+  {
+    "name": "XZ Archive",
+    "extension": "xz",
+    "magic": [
+      253,
+      55,
+      122,
+      88,
+      90,
+      0
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Archive",
+    "mime": "application/x-xz"
+  },
+  {
+    "name": "LZ4 Archive",
+    "extension": "lz4",
+    "magic": [
+      4,
+      34,
+      77,
+      24
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Archive",
+    "mime": "application/x-lz4"
+  },
+  {
+    "name": "ISO Image",
+    "extension": "iso",
+    "magic": [
+      67,
+      68,
+      48,
+      48,
+      49
+    ],
+    "offset": 32769,
+    "default_size": 4294967296,
+    "category": "Archive",
+    "mime": "application/x-iso9660-image"
+  },
+  {
+    "name": "CAB Archive",
+    "extension": "cab",
+    "magic": [
+      77,
+      83,
+      67,
+      70
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Archive",
+    "mime": "application/vnd.ms-cab-compressed"
+  },
+  {
+    "name": "DMG Image",
+    "extension": "dmg",
+    "magic": [
+      107,
+      111,
+      108,
+      121
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Archive",
+    "mime": "application/x-apple-diskimage"
+  },
+  {
+    "name": "MP4 Video",
+    "extension": "mp4",
+    "magic": [
+      102,
+      116,
+      121,
+      112,
+      105,
+      115,
+      111,
+      109
+    ],
+    "offset": 4,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/mp4"
+  },
+  {
+    "name": "MP4 Video (QuickTime)",
+    "extension": "mp4",
+    "magic": [
+      102,
+      116,
+      121,
+      112,
+      109,
+      112,
+      52,
+      50
+    ],
+    "offset": 4,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/mp4"
+  },
+  {
+    "name": "MKV Video",
+    "extension": "mkv",
+    "magic": [
+      26,
+      69,
+      223,
+      163
+    ],
+    "offset": 0,
+    "default_size": 1048576000,
+    "category": "Video",
+    "mime": "video/x-matroska"
+  },
+  {
+    "name": "AVI Video",
+    "extension": "avi",
+    "magic": [
+      82,
+      73,
+      70,
+      70,
+      0,
+      0,
+      0,
+      0,
+      65,
+      86,
+      73,
+      32
+    ],
+    "offset": 0,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/x-msvideo"
+  },
+  {
+    "name": "MOV Video",
+    "extension": "mov",
+    "magic": [
+      102,
+      116,
+      121,
+      112,
+      113,
+      116,
+      32,
+      32
+    ],
+    "offset": 4,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/quicktime"
+  },
+  {
+    "name": "WMV Video",
+    "extension": "wmv",
+    "magic": [
+      48,
+      38,
+      178,
+      117,
+      142,
+      102,
+      207,
+      17,
+      166,
+      217,
+      0,
+      170,
+      0,
+      98,
+      206,
+      108
+    ],
+    "offset": 0,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/x-ms-wmv"
+  },
+  {
+    "name": "FLV Video",
+    "extension": "flv",
+    "magic": [
+      70,
+      76,
+      86,
+      1
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Video",
+    "mime": "video/x-flv"
+  },
+  {
+    "name": "WebM Video",
+    "extension": "webm",
+    "magic": [
+      26,
+      69,
+      223,
+      163
+    ],
+    "offset": 0,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/webm"
+  },
+  {
+    "name": "MPEG Video",
+    "extension": "mpg",
+    "magic": [
+      0,
+      0,
+      1,
+      186
+    ],
+    "offset": 0,
+    "default_size": 524288000,
+    "category": "Video",
+    "mime": "video/mpeg"
+  },
+  {
+    "name": "MP3 Audio",
+    "extension": "mp3",
+    "magic": [
+      73,
+      68,
+      51
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Audio",
+    "mime": "audio/mpeg"
+  },
+  {
+    "name": "WAV Audio",
+    "extension": "wav",
+    "magic": [
+      82,
+      73,
+      70,
+      70,
+      0,
+      0,
+      0,
+      0,
+      87,
+      65,
+      86,
+      69
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Audio",
+    "mime": "audio/wav"
+  },
+  {
+    "name": "FLAC Audio",
+    "extension": "flac",
+    "magic": [
+      102,
+      76,
+      97,
+      67
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Audio",
+    "mime": "audio/flac"
+  },
+  {
+    "name": "OGG Audio",
+    "extension": "ogg",
+    "magic": [
+      79,
+      103,
+      103,
+      83
+    ],
+    "offset": 0,
+    "default_size": 20971520,
+    "category": "Audio",
+    "mime": "audio/ogg"
+  },
+  {
+    "name": "MIDI Audio",
+    "extension": "mid",
+    "magic": [
+      77,
+      84,
+      104,
+      100
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Audio",
+    "mime": "audio/midi"
+  },
+  {
+    "name": "AAC Audio",
+    "extension": "aac",
+    "magic": [
+      255,
+      241
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Audio",
+    "mime": "audio/aac"
+  },
+  {
+    "name": "M4A Audio",
+    "extension": "m4a",
+    "magic": [
+      102,
+      116,
+      121,
+      112,
+      77,
+      52,
+      65,
+      32
+    ],
+    "offset": 4,
+    "default_size": 10485760,
+    "category": "Audio",
+    "mime": "audio/mp4"
+  },
+  {
+    "name": "SQLite DB",
+    "extension": "sqlite",
+    "magic": [
+      83,
+      81,
+      76,
+      105,
+      116,
+      101,
+      32,
+      102,
+      111,
+      114,
+      109,
+      97,
+      116,
+      32,
+      51,
+      0
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Database",
+    "mime": "application/x-sqlite3"
+  },
+  {
+    "name": "JSON Data",
+    "extension": "json",
+    "magic": [
+      123,
+      34
+    ],
+    "offset": 0,
+    "default_size": 5242880,
+    "category": "Data",
+    "mime": "application/json"
+  },
+  {
+    "name": "XML Data",
+    "extension": "xml",
+    "magic": [
+      60,
+      63,
+      120,
+      109,
+      108
+    ],
+    "offset": 0,
+    "default_size": 5242880,
+    "category": "Data",
+    "mime": "application/xml"
+  },
+  {
+    "name": "BSON Data",
+    "extension": "bson",
+    "magic": [
+      0,
+      0,
+      0,
+      0,
+      2
+    ],
+    "offset": 4,
+    "default_size": 5242880,
+    "category": "Data",
+    "mime": "application/bson"
+  },
+  {
+    "name": "Win Executable",
+    "extension": "exe",
+    "magic": [
+      77,
+      90
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Executable",
+    "mime": "application/x-msdownload"
+  },
+  {
+    "name": "Linux Executable",
+    "extension": "elf",
+    "magic": [
+      127,
+      69,
+      76,
+      70
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Executable",
+    "mime": "application/x-elf"
+  },
+  {
+    "name": "Java Class",
+    "extension": "class",
+    "magic": [
+      202,
+      254,
+      186,
+      190
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Executable",
+    "mime": "application/java-vm"
+  },
+  {
+    "name": "DEX (Android)",
+    "extension": "dex",
+    "magic": [
+      100,
+      101,
+      120,
+      10,
+      48,
+      51,
+      53,
+      0
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Executable",
+    "mime": "application/x-dex"
+  },
+  {
+    "name": "APK (Android)",
+    "extension": "apk",
+    "magic": [
+      80,
+      75,
+      3,
+      4
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Executable",
+    "mime": "application/vnd.android.package-archive"
+  },
+  {
+    "name": "Mach-O (macOS)",
+    "extension": "macho",
+    "magic": [
+      206,
+      250,
+      237,
+      254
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Executable",
+    "mime": "application/x-mach-binary"
+  },
+  {
+    "name": "Win Registry",
+    "extension": "regf",
+    "magic": [
+      114,
+      101,
+      103,
+      102
+    ],
+    "offset": 0,
+    "default_size": 52428800,
+    "category": "Forensic",
+    "mime": "application/octet-stream"
+  },
+  {
+    "name": "Win Link (LNK)",
+    "extension": "lnk",
+    "magic": [
+      76,
+      0,
+      0,
+      0,
+      1,
+      20,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      192,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      70
+    ],
+    "offset": 0,
+    "default_size": 10240,
+    "category": "Forensic",
+    "mime": "application/x-ms-shortcut"
+  },
+  {
+    "name": "Win Event Log",
+    "extension": "evtx",
+    "magic": [
+      69,
+      108,
+      102,
+      70,
+      105,
+      108,
+      101,
+      0
+    ],
+    "offset": 0,
+    "default_size": 20971520,
+    "category": "Forensic",
+    "mime": "application/octet-stream"
+  },
+  {
+    "name": "Win Prefetch",
+    "extension": "pf",
+    "magic": [
+      83,
+      67,
+      67,
+      65
+    ],
+    "offset": 4,
+    "default_size": 1048576,
+    "category": "Forensic",
+    "mime": "application/octet-stream"
+  },
+  {
+    "name": "Win JumpList",
+    "extension": "customDestinations-ms",
+    "magic": [
+      208,
+      207,
+      17,
+      224,
+      161,
+      177,
+      26,
+      225
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Forensic",
+    "mime": "application/octet-stream"
+  },
+  {
+    "name": "NTFS $MFT",
+    "extension": "mft",
+    "magic": [
+      70,
+      73,
+      76,
+      69
+    ],
+    "offset": 0,
+    "default_size": 1073741824,
+    "category": "Forensic",
+    "mime": "application/octet-stream"
+  },
+  {
+    "name": "PCAP Capture",
+    "extension": "pcap",
+    "magic": [
+      161,
+      178,
+      195,
+      212
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Forensic",
+    "mime": "application/vnd.tcpdump.pcap"
+  },
+  {
+    "name": "PCAPNG Capture",
+    "extension": "pcapng",
+    "magic": [
+      10,
+      13,
+      10,
+      26
+    ],
+    "offset": 0,
+    "default_size": 104857600,
+    "category": "Forensic",
+    "mime": "application/x-pcapng"
+  },
+  {
+    "name": "Python Script",
+    "extension": "py",
+    "magic": [
+      35,
+      33,
+      47,
+      117,
+      115,
+      114,
+      47,
+      98,
+      105,
+      110,
+      47,
+      112,
+      121,
+      116,
+      104,
+      111,
+      110
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Code",
+    "mime": "text/x-python"
+  },
+  {
+    "name": "Shell Script",
+    "extension": "sh",
+    "magic": [
+      35,
+      33,
+      47,
+      98,
+      105,
+      110,
+      47,
+      115,
+      104
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Code",
+    "mime": "text/x-shellscript"
+  },
+  {
+    "name": "Ruby Script",
+    "extension": "rb",
+    "magic": [
+      35,
+      33,
+      47,
+      117,
+      115,
+      114,
+      47,
+      98,
+      105,
+      110,
+      47,
+      114,
+      117,
+      98,
+      121
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Code",
+    "mime": "text/x-ruby"
+  },
+  {
+    "name": "Rust Source",
+    "extension": "rs",
+    "magic": [
+      117,
+      115,
+      101,
+      32,
+      115,
+      116,
+      100,
+      58,
+      58
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Code",
+    "mime": "text/x-rust"
+  },
+  {
+    "name": "C Source",
+    "extension": "c",
+    "magic": [
+      35,
+      105,
+      110,
+      99,
+      108,
+      117,
+      100,
+      101,
+      32,
+      60
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Code",
+    "mime": "text/x-csrc"
+  },
+  {
+    "name": "C++ Source",
+    "extension": "cpp",
+    "magic": [
+      35,
+      105,
+      110,
+      99,
+      108,
+      117,
+      100,
+      101,
+      32,
+      60,
+      105,
+      111,
+      115,
+      116,
+      114,
+      101,
+      97,
+      109,
+      62
+    ],
+    "offset": 0,
+    "default_size": 1048576,
+    "category": "Code",
+    "mime": "text/x-c++src"
+  },
+  {
+    "name": "TrueType Font",
+    "extension": "ttf",
+    "magic": [
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Resource",
+    "mime": "font/ttf"
+  },
+  {
+    "name": "OpenType Font",
+    "extension": "otf",
+    "magic": [
+      79,
+      84,
+      84,
+      79
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Resource",
+    "mime": "font/otf"
+  },
+  {
+    "name": "WOFF Font",
+    "extension": "woff",
+    "magic": [
+      119,
+      79,
+      70,
+      70
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Resource",
+    "mime": "font/woff"
+  },
+  {
+    "name": "WOFF2 Font",
+    "extension": "woff2",
+    "magic": [
+      119,
+      79,
+      70,
+      50
+    ],
+    "offset": 0,
+    "default_size": 10485760,
+    "category": "Resource",
+    "mime": "font/woff2"
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "expect_ntfs": true,
+  "min_artifacts": 3,
+  "expected_names": [
+    "ActiveFile.txt",
+    "Deleted1.bak",
+    "OldData.old"
+  ],
+  "has_deleted": true
+}

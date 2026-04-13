@@ -1,0 +1,26 @@
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Node / JS
+node_modules/
+dist/
+.env
+.env.*
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# Project Specific
+*.img
+*.db
+recovery_scan*.db
+src-tauri/target/

@@ -1,0 +1,8 @@
+{
+  "expect_ntfs": true,
+  "layout": "MBR",
+  "ntfs_offset": 1048576,
+  "expected_names": [
+    "WholeDiskFile.txt"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "expect_ntfs": true,
+  "min_artifacts": 2,
+  "expected_names": [
+    "MFT_Valid.bin",
+    "Document.docx"
+  ],
+  "has_deleted": false
+}
