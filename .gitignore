@@ -24,3 +24,8 @@ Thumbs.db
 *.db
 recovery_scan*.db
 src-tauri/target/
+*.manifest
+*.txt
+*.log
+**/compile_errors.txt
+**/desktop.exe.manifest
