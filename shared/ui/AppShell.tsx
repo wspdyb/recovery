@@ -33,6 +33,15 @@ interface DataInfo {
     value: any;
 }
 
+interface DriveInfo {
+    id: string;
+    name: string;
+    size?: string;
+    type_str?: string;
+    raw_path?: string;
+    mount_point?: string;
+}
+
 interface ParsedRecord {
     mft_id: number;
     parent_mft_id: number;
@@ -70,6 +79,10 @@ export default function AppShell() {
     const [selectedFile, setSelectedFile] = useState<MftNode | null>(null);
     const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
     const [isMaximized, setIsMaximized] = useState(false);
+
+    const [drives, setDrives] = useState<DriveInfo[]>([]);
+    const [selectedDriveId, setSelectedDriveId] = useState<string>("");
+    const [isLoadingDrives, setIsLoadingDrives] = useState(false);
 
     useEffect(() => {
         if (!isTauri) return;
@@ -154,6 +167,76 @@ export default function AppShell() {
             unlisten.then((f) => f());
         };
     }, []);
+
+    useEffect(() => {
+        loadDrives();
+    }, []);
+
+    async function loadDrives() {
+        setIsLoadingDrives(true);
+
+        try {
+            if (!isTauri) {
+                const mockDrives: DriveInfo[] = [
+                    {
+                        id: "C:\\",
+                        name: "Local Disk",
+                        size: "476 GB",
+                        type_str: "כונן מקומי (NTFS)",
+                        raw_path: "\\\\.\\C:",
+                        mount_point: "C:\\"
+                    },
+                    {
+                        id: "\\\\.\\PhysicalDrive1",
+                        name: "External USB",
+                        size: "32 GB",
+                        type_str: "USB / נשלף",
+                        raw_path: "\\\\.\\PhysicalDrive1",
+                        mount_point: "E:\\"
+                    }
+                ];
+
+                setDrives(mockDrives);
+                setSelectedDriveId(mockDrives[0].id);
+                setScanPath(mockDrives[0].raw_path || mockDrives[0].id);
+                setLogs((prev) => ["[BROWSER] Loaded mock drives list", ...prev]);
+                return;
+            }
+
+            const result = (await invoke("get_system_drives")) as DriveInfo[];
+
+            if (!Array.isArray(result) || result.length === 0) {
+                setDrives([]);
+                setSelectedDriveId("");
+                setLogs((prev) => ["[WARN] No drives were returned by backend", ...prev]);
+                return;
+            }
+
+            setDrives(result);
+
+            const first = result[0];
+            setSelectedDriveId(first.id);
+            setScanPath(first.raw_path || first.mount_point || first.id);
+
+            setLogs((prev) => [`[SYSTEM] Loaded ${result.length} drives`, ...prev]);
+        } catch (e: any) {
+            setDrives([]);
+            setSelectedDriveId("");
+            setLogs((prev) => [`[ERROR] Failed to load drives: ${e?.message || e}`, ...prev]);
+        } finally {
+            setIsLoadingDrives(false);
+        }
+    }
+
+    function handleDriveChange(driveId: string) {
+        setSelectedDriveId(driveId);
+
+        const drive = drives.find((d) => d.id === driveId);
+        if (!drive) return;
+
+        setScanPath(drive.raw_path || drive.mount_point || drive.id);
+        setLogs((prev) => [`[SYSTEM] Selected drive: ${drive.name} (${drive.id})`, ...prev]);
+    }
 
     async function handleMinimize() {
         if (!isTauri) return;
@@ -406,7 +489,58 @@ export default function AppShell() {
                         </div>
                         <div className="header-controls">
                             <div className="input-field">
-                                <label>כונן מקור</label>
+                                <label>כוננים זמינים</label>
+                                <div className="drive-picker-row">
+                                    <select
+                                        className="drive-select"
+                                        value={selectedDriveId}
+                                        onChange={(e) => handleDriveChange(e.target.value)}
+                                        disabled={isLoadingDrives || drives.length === 0}
+                                    >
+                                        {drives.length === 0 ? (
+                                            <option value="">
+                                                {isLoadingDrives ? "טוען כוננים..." : "לא נמצאו כוננים"}
+                                            </option>
+                                        ) : (
+                                            drives.map((drive) => (
+                                                <option key={drive.id} value={drive.id}>
+                                                    {drive.name} | {drive.type_str || "Unknown"} | {drive.size || "?"}
+                                                </option>
+                                            ))
+                                        )}
+                                    </select>
+
+                                    <button
+                                        type="button"
+                                        className="action-btn secondary"
+                                        onClick={loadDrives}
+                                        disabled={isLoadingDrives}
+                                    >
+                                        {isLoadingDrives ? "טוען..." : "רענן כוננים"}
+                                    </button>
+                                </div>
+
+                                {selectedDriveId && (
+                                    <div className="drive-meta">
+                                        {(() => {
+                                            const drive = drives.find((d) => d.id === selectedDriveId);
+                                            if (!drive) return null;
+
+                                            return (
+                                                <>
+                                                    <span><strong>שם:</strong> {drive.name}</span>
+                                                    <span><strong>סוג:</strong> {drive.type_str || "Unknown"}</span>
+                                                    <span><strong>גודל:</strong> {drive.size || "Unknown"}</span>
+                                                    <span><strong>נתיב:</strong> {drive.raw_path || drive.mount_point || drive.id}</span>
+                                                </>
+                                            );
+                                        })()}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="input-field">
+                                <label>נתיב מקור ידני / מתקדם</label>
                                 <input
                                     type="text"
                                     value={scanPath}
