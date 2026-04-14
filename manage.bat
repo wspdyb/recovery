@@ -1,5 +1,24 @@
 @echo off
 chcp 65001 >nul
+
+:: בדיקת הרשאות מנהל
+net session >nul 2>&1
+if %errorLevel% == 0 (
+    goto :gotAdmin
+) else (
+    echo ...מבקש הרשאות מנהל לצורך גישה לכוננים
+    if "%*"=="" (
+        powershell -Command "Start-Process -Verb RunAs -FilePath '%0'"
+    ) else (
+        powershell -Command "Start-Process -Verb RunAs -FilePath '%0' -ArgumentList '%*'"
+    )
+    exit /b
+)
+
+:gotAdmin
+pushd "%cd%"
+CD /D "%~dp0"
+
 :menu
 cls
 echo ====================================
@@ -60,12 +79,12 @@ goto menu
 echo.
 echo ...באהטיגל פחדו םיינוישי דחעמ
 call git add .
-set /p commit_msg=": (טלופדיל Enter ץלח וא) נוכדע תעדה סנכה"
+set /p commit_msg=": (לדחמ תרירבל Enter ץחל וא) ןוכדע דועית סנכה"
 if "%commit_msg%"=="" set commit_msg="Update"
 call git commit -m %commit_msg%
 call git push
 echo.
-echo .םלשהו נוכדעה
+echo .םלשוה ןוכדעה
 pause
 goto menu
 

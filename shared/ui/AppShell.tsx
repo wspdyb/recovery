@@ -4,12 +4,11 @@ import { listen } from "@tauri-apps/api/event";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Database, 
-  FileText, 
-  Folder, 
-  ChevronRight, 
-  ChevronDown, 
+import {
+  FileText,
+  Folder,
+  ChevronRight,
+  ChevronDown,
   Download,
   Search,
   Settings as SettingsIcon,
@@ -18,7 +17,6 @@ import {
   AlertTriangle,
   RefreshCw,
   ArrowLeft,
-  CheckCircle2,
   FileArchive,
   Copy,
   Moon,
@@ -34,13 +32,6 @@ import {
 import { FilePreviewer } from "../../apps/desktop/src/components/FilePreviewer";
 import "../../src/index.css";
 
-interface CarvedFile {
-  offset: number;
-  file_type: string;
-  extension: string;
-  estimated_size: number;
-  entropy: number;
-}
 
 type AppState = "DRIVE_SELECTION" | "SCANNING" | "CLONING" | "RESULTS";
 type Theme = "dark" | "light" | "system";
@@ -102,11 +93,10 @@ export default function AppShell() {
   });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(true);
-  const [currentFolderId, setCurrentFolderId] = useState<number>(5); // 5 הוא ה-Root ב-NTFS
   const [folderContents, setFolderContents] = useState<any[]>([]);
-  const [navigationHistory, setNavigationHistory] = useState<{id: number, name: string}[]>([{id: 5, name: "Root"}]);
+  const [navigationHistory, setNavigationHistory] = useState<{ id: number, name: string }[]>([{ id: 5, name: "Root" }]);
   const [selectedFiles, setSelectedFiles] = useState<Set<number>>(new Set());
-  const [carvedFiles, setCarvedFiles] = useState<CarvedFile[]>([]);
+  // const [carvedFiles, setCarvedFiles] = useState<CarvedFile[]>([]);
   const [previewFile, setPreviewFile] = useState<any | null>(null);
   const [isLoadingPreview, setIsLoadingPreview] = useState(false);
 
@@ -150,16 +140,16 @@ export default function AppShell() {
           } else {
             newState[record.mft_id] = { ...newState[record.mft_id], ...record };
           }
-          
+
           if (record.parent_mft_id !== undefined && record.parent_mft_id !== record.mft_id) {
             if (!newState[record.parent_mft_id]) {
-              newState[record.parent_mft_id] = { 
-                mft_id: record.parent_mft_id, 
-                parent_mft_id: 0, 
-                filename: "...", 
-                is_directory: true, 
+              newState[record.parent_mft_id] = {
+                mft_id: record.parent_mft_id,
+                parent_mft_id: 0,
+                filename: "...",
+                is_directory: true,
                 data_info: null,
-                children: [] 
+                children: []
               };
             }
             if (!newState[record.parent_mft_id].children.includes(record.mft_id)) {
@@ -184,14 +174,14 @@ export default function AppShell() {
       }
     });
 
-    const unlistenCarve = listen<CarvedFile>("carve-result", (event) => {
-      setCarvedFiles(prev => [...prev, event.payload]);
-    });
+    // const unlistenCarve = listen<CarvedFile>("carve-result", (event) => {
+    //   setCarvedFiles(prev => [...prev, event.payload]);
+    // });
 
     return () => {
       unlisten.then((f) => f());
       unlistenClone.then((f) => f());
-      unlistenCarve.then((f) => f());
+      // unlistenCarve.then((f) => f());
     };
   }, []);
 
@@ -224,7 +214,7 @@ export default function AppShell() {
     setAppState("SCANNING");
     setFileSystem({});
     setProgress({ percentage: 0, current_file: "Initializing connection...", files_found: 0, record: null });
-    
+
     if (!isTauri) {
       // Simulate scan in browser
       let found = 0;
@@ -278,7 +268,7 @@ export default function AppShell() {
 
   async function handleFixPartition(driveId: string, partitionIndex: number) {
     if (!isTauri) return;
-    
+
     const confirmed = await window.confirm(
       `אזהרה: פעולה זו תשנה את סקטור האתחול של הכונן.\nמומלץ לבצע עותק Image לפני הפעולה.\n\nהאם להמשיך?`
     );
@@ -308,13 +298,13 @@ export default function AppShell() {
         <SettingsIcon size={14} /> כלי תיקון מהיר
       </div>
       <div style={{ display: "flex", gap: "8px" }}>
-        <button 
+        <button
           className="action-btn"
-          style={{ 
-            flex: 1, 
-            fontSize: "11px", 
-            padding: "6px", 
-            backgroundColor: "var(--accent)", 
+          style={{
+            flex: 1,
+            fontSize: "11px",
+            padding: "6px",
+            backgroundColor: "var(--accent)",
             color: "white",
             border: "none",
             borderRadius: "4px",
@@ -324,13 +314,13 @@ export default function AppShell() {
         >
           הגדר Active
         </button>
-        <button 
+        <button
           className="action-btn"
-          style={{ 
-            flex: 1, 
-            fontSize: "11px", 
-            padding: "6px", 
-            backgroundColor: "transparent", 
+          style={{
+            flex: 1,
+            fontSize: "11px",
+            padding: "6px",
+            backgroundColor: "transparent",
             color: "var(--text-dim)",
             border: "1px solid var(--border)",
             borderRadius: "4px",
@@ -363,7 +353,7 @@ export default function AppShell() {
       if (savePath) {
         setAppState("CLONING");
         setCloneProgress({ percentage: 0, copied_bytes: 0, total_bytes: 100 });
-        
+
         try {
           await invoke("clone_drive", { sourcePath: driveId, destPath: savePath });
         } catch (e) {
@@ -390,7 +380,7 @@ export default function AppShell() {
   async function handleRecoverFile(item: any) {
     if (item.is_dir) {
       alert("שחזור תיקיות שלמות יתווסף בקרוב!");
-      return; 
+      return;
     }
 
     try {
@@ -409,7 +399,7 @@ export default function AppShell() {
             mft_id: item.mft_id // הנתון היחיד שהמנוע צריך!
           }
         });
-        
+
         alert(`✅ הקובץ ${item.filename} שוחזר ונשמר בהצלחה אל:\n${savePath}`);
       }
     } catch (e) {
@@ -434,15 +424,15 @@ export default function AppShell() {
       // נניח ש-sessionId הוא 1 כרגע (בפרויקט מלא תשמור את ה-ID מהסריקה)
       const contents = await invoke<any[]>("get_directory_contents", { sessionId: 1, parentMftId: mftId });
       setFolderContents(contents);
-      setCurrentFolderId(mftId);
-      
+      // setCurrentFolderId(mftId);
+
       // הוספה להיסטוריית הניווט (Breadcrumbs)
       setNavigationHistory(prev => {
         const existingIndex = prev.findIndex(h => h.id === mftId);
         if (existingIndex !== -1) {
           return prev.slice(0, existingIndex + 1);
         } else {
-          return [...prev, {id: mftId, name: folderName}];
+          return [...prev, { id: mftId, name: folderName }];
         }
       });
     } catch (e) {
@@ -475,7 +465,7 @@ export default function AppShell() {
             await invoke("extract_file", {
               req: {
                 source_drive: selectedDrive,
-                output_path: `${outputDir}\\${file.filename}`, 
+                output_path: `${outputDir}\\${file.filename}`,
                 mft_id: file.mft_id
               }
             });
@@ -484,9 +474,9 @@ export default function AppShell() {
             console.error(`שגיאה בשחזור ${file.filename}:`, e);
           }
         }
-        
+
         alert(`✅ ${successCount} מתוך ${filesToRecover.length} קבצים שוחזרו בהצלחה!`);
-        setSelectedFiles(new Set()); 
+        setSelectedFiles(new Set());
       }
     } catch (e) {
       console.error("שגיאה בשחזור מרוכז:", e);
@@ -510,7 +500,7 @@ export default function AppShell() {
 
     return (
       <div key={id} className="tree-node-wrapper">
-        <div 
+        <div
           className={`tree-node ${isSelected ? 'selected' : ''}`}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
           onClick={() => {
@@ -530,10 +520,10 @@ export default function AppShell() {
           </span>
           <span className="node-name">{node.filename || (id === 5 ? "ROOT" : "UNKNOWN")}</span>
         </div>
-        
+
         <AnimatePresence>
           {isExpanded && hasChildren && (
-            <motion.div 
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -565,7 +555,7 @@ export default function AppShell() {
       ) : (
         <div className="drives-grid">
           {/* כרטיסייה לטעינת אימג' מהמחשב */}
-          <motion.div 
+          <motion.div
             className="drive-card image-load-card"
             whileHover={{ y: -4 }}
             whileTap={{ scale: 0.98 }}
@@ -585,8 +575,8 @@ export default function AppShell() {
           </motion.div>
 
           {drives.map(drive => (
-            <motion.div 
-              key={drive.id} 
+            <motion.div
+              key={drive.id}
               className={`drive-card ${drive.is_raw ? 'raw-warning' : ''}`}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.98 }}
@@ -601,10 +591,10 @@ export default function AppShell() {
                   {drive.is_raw && <AlertTriangle size={16} className="text-accent" />}
                 </div>
                 <span className="drive-path">{drive.id}</span>
-                
-                <span style={{ 
-                  color: drive.is_raw ? "var(--accent)" : "var(--text-dim)", 
-                  fontSize: "13px", 
+
+                <span style={{
+                  color: drive.is_raw ? "var(--accent)" : "var(--text-dim)",
+                  fontSize: "13px",
                   marginTop: "4px",
                   display: 'block',
                   fontWeight: drive.is_raw ? "600" : "normal"
@@ -612,12 +602,12 @@ export default function AppShell() {
                   {drive.type_str}
                 </span>
 
-                <div style={{ 
-                  backgroundColor: "rgba(0,0,0,0.2)", 
-                  width: "100%", 
-                  padding: "10px", 
-                  borderRadius: "8px", 
-                  marginTop: "12px", 
+                <div style={{
+                  backgroundColor: "rgba(0,0,0,0.2)",
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  marginTop: "12px",
                   textAlign: "center",
                   border: "1px solid rgba(255,255,255,0.05)"
                 }}>
@@ -633,7 +623,7 @@ export default function AppShell() {
 
                 {drive.is_raw && renderFixTools(drive)}
               </div>
-              
+
               <div className="drive-card-actions" style={{ marginTop: 'auto', paddingTop: '16px' }}>
                 <button className="scan-now-btn" onClick={() => startScan(drive.id)}>סרוק כונן</button>
                 <button className="clone-btn" onClick={() => handleCreateImage(drive.id, drive.name)} title="צור אימג' (Clone)">
@@ -656,14 +646,14 @@ export default function AppShell() {
   const renderScanning = () => (
     <div className="view-container scanning-view" dir="rtl">
       <div className="scanning-content">
-        <motion.div 
+        <motion.div
           className="scanning-icon"
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
         >
           <RefreshCw size={80} className="text-primary" />
         </motion.div>
-        
+
         <h2>סורק את {selectedDrive}...</h2>
         <p className="scanning-subtitle">נא לא לנתק את הכונן במהלך הפעולה</p>
 
@@ -673,22 +663,22 @@ export default function AppShell() {
               <span className="progress-percent">{progress.percentage.toFixed(1)}%</span>
               <span className="progress-found">נמצאו: {progress.files_found} קבצים</span>
             </div>
-            
+
             <div className="progress-track">
-              <motion.div 
+              <motion.div
                 className="progress-fill"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress.percentage}%` }}
               />
             </div>
-            
+
             <div className="current-file-box">
               <label>קובץ נוכחי:</label>
               <p className="current-file-name">{progress.current_file}</p>
             </div>
           </div>
         )}
-        
+
         <button className="stop-btn" onClick={() => setAppState("DRIVE_SELECTION")}>
           עצור סריקה
         </button>
@@ -698,39 +688,39 @@ export default function AppShell() {
 
   const renderCloning = () => {
     if (!cloneProgress) return null;
-    
+
     const copiedGB = (cloneProgress.copied_bytes / 1073741824).toFixed(2);
     const totalGB = (cloneProgress.total_bytes / 1073741824).toFixed(2);
 
     return (
       <div className="view-container scanning-view" dir="rtl">
         <div className="scanning-content">
-          <motion.div 
+          <motion.div
             className="scanning-icon"
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             <Copy size={80} className="text-accent" />
           </motion.div>
-          
+
           <h2>יוצר עותק פורנזי (Clone)...</h2>
           <p className="scanning-subtitle">מעתיק נתונים מ-{selectedDrive} לקובץ אימג'</p>
-          
+
           <div className="progress-container">
             <div className="progress-stats">
               <span className="progress-percent">{cloneProgress.percentage.toFixed(1)}%</span>
               <span className="progress-found">{copiedGB} GB / {totalGB} GB</span>
             </div>
-            
+
             <div className="progress-track">
-              <motion.div 
+              <motion.div
                 className="progress-fill"
                 style={{ backgroundColor: 'var(--accent)' }}
                 initial={{ width: 0 }}
                 animate={{ width: `${cloneProgress.percentage}%` }}
               />
             </div>
-            
+
             <div className="current-file-box">
               <label>סטטוס:</label>
               <p className="current-file-name">מעתיק בלוקים גולמיים (Raw Blocks)...</p>
@@ -758,7 +748,7 @@ export default function AppShell() {
             <span className="results-count">{progress?.files_found} קבצים נמצאו</span>
           </div>
           <div className="results-actions">
-            <button 
+            <button
               className={`recover-btn primary ${selectedFiles.size === 0 ? 'disabled' : ''}`}
               onClick={handleRecoverSelected}
               disabled={selectedFiles.size === 0}
@@ -780,9 +770,9 @@ export default function AppShell() {
             </div>
 
             {/* אזור תצוגה מקדימה */}
-            <div className="preview-panel" style={{ 
-              borderTop: "1px solid var(--border)", 
-              padding: "15px", 
+            <div className="preview-panel" style={{
+              borderTop: "1px solid var(--border)",
+              padding: "15px",
               backgroundColor: "var(--bg-darker)",
               flex: 1,
               minHeight: "300px",
@@ -793,12 +783,12 @@ export default function AppShell() {
               <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-dim)", display: "flex", alignItems: "center", gap: "5px" }}>
                 <Eye size={14} /> תצוגה מקדימה
               </div>
-              <div style={{ 
-                flex: 1, 
-                backgroundColor: "rgba(0,0,0,0.2)", 
-                borderRadius: "4px", 
-                display: "flex", 
-                alignItems: "center", 
+              <div style={{
+                flex: 1,
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
                 overflow: "hidden",
                 border: "1px dashed var(--border)"
@@ -810,13 +800,13 @@ export default function AppShell() {
                   </div>
                 ) : previewFile ? (
                   <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
-                    <FilePreviewer 
+                    <FilePreviewer
                       file={{
                         mft_id: previewFile.mft_id,
                         filename: previewFile.filename,
                         mime: previewFile.mime_type
-                      }} 
-                      drive={selectedDrive} 
+                      }}
+                      drive={selectedDrive}
                     />
                   </div>
                 ) : (
@@ -833,8 +823,8 @@ export default function AppShell() {
             <div className="breadcrumbs" style={{ marginBottom: "15px", display: "flex", gap: "8px", fontSize: "14px" }}>
               {navigationHistory.map((nav, idx) => (
                 <span key={nav.id} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  <span 
-                    style={{ cursor: "pointer", color: idx === navigationHistory.length - 1 ? "var(--primary)" : "var(--text-dim)" }} 
+                  <span
+                    style={{ cursor: "pointer", color: idx === navigationHistory.length - 1 ? "var(--primary)" : "var(--text-dim)" }}
                     onClick={() => loadFolder(nav.id, nav.name)}
                   >
                     {nav.name}
@@ -848,9 +838,9 @@ export default function AppShell() {
               <thead>
                 <tr>
                   <th style={{ width: "40px" }}>
-                    <input 
-                      type="checkbox" 
-                      onChange={(e) => {
+                    <input
+                      type="checkbox"
+                      onChange={(e: any) => {
                         if (e.target.checked) {
                           const allFileIds = folderContents.filter(f => !f.is_dir).map(f => f.mft_id);
                           setSelectedFiles(new Set(allFileIds));
@@ -871,19 +861,19 @@ export default function AppShell() {
               <tbody>
                 {folderContents.length > 0 ? (
                   folderContents.map(item => (
-                    <tr 
-                      key={item.mft_id} 
-                      onClick={() => setSelectedNodeId(item.mft_id)} 
+                    <tr
+                      key={item.mft_id}
+                      onClick={() => setSelectedNodeId(item.mft_id)}
                       className={selectedNodeId === item.mft_id ? 'active' : ''}
                       onDoubleClick={() => item.is_dir && loadFolder(item.mft_id, item.filename)}
                     >
                       <td>
                         {!item.is_dir && (
-                          <input 
-                            type="checkbox" 
+                          <input
+                            type="checkbox"
                             checked={selectedFiles.has(item.mft_id)}
-                            onClick={(e) => e.stopPropagation()}
-                            onChange={(e) => {
+                            onClick={(e: any) => e.stopPropagation()}
+                            onChange={(e: any) => {
                               const newSet = new Set(selectedFiles);
                               if (e.target.checked) newSet.add(item.mft_id);
                               else newSet.delete(item.mft_id);
@@ -914,11 +904,11 @@ export default function AppShell() {
                       <td>
                         <div style={{ display: "flex", gap: "5px" }}>
                           {!item.is_dir && (
-                            <button 
-                              className="window-control-btn" 
+                            <button
+                              className="window-control-btn"
                               style={{ width: "28px", height: "28px", borderRadius: "4px" }}
                               title="תצוגה מקדימה"
-                              onClick={(e) => {
+                              onClick={(e: any) => {
                                 e.stopPropagation();
                                 handlePreview(item);
                               }}
@@ -927,10 +917,10 @@ export default function AppShell() {
                             </button>
                           )}
                           {!item.is_dir && (
-                            <button 
-                              className="recover-btn primary" 
+                            <button
+                              className="recover-btn primary"
                               style={{ padding: '4px 12px', fontSize: '12px' }}
-                              onClick={(e) => {
+                              onClick={(e: any) => {
                                 e.stopPropagation();
                                 handleRecoverFile(item);
                               }}
@@ -960,14 +950,14 @@ export default function AppShell() {
   if (!isAdmin) {
     return (
       <div className="app-shell">
-        <header 
-          data-tauri-drag-region 
+        <header
+          data-tauri-drag-region
           className="custom-titlebar"
-          style={{ 
-            backgroundColor: "var(--bg-darker)", 
-            padding: "8px 15px", 
-            borderBottom: "1px solid var(--border)", 
-            display: "flex", 
+          style={{
+            backgroundColor: "var(--bg-darker)",
+            padding: "8px 15px",
+            borderBottom: "1px solid var(--border)",
+            display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             userSelect: "none",
@@ -981,41 +971,44 @@ export default function AppShell() {
               PhoenixRecover <span style={{ color: "var(--primary)", fontSize: "11px", marginLeft: "4px" }}>PRO</span>
             </h1>
           </div>
-        {/* צד שמאל - כפתורי שליטה (סגירה, הגדלה ומזעור) */}
-        {isTauri && (
-          <div className="titlebar-right no-drag" data-tauri-drag-region={false} style={{ display: "flex", gap: "2px" }}>
-            <button 
-              onClick={(e) => { e.stopPropagation(); appWindow?.minimize(); }} 
-              onMouseDown={(e) => e.stopPropagation()}
-              className="window-control-btn no-drag"
-              title="מזער"
-            >
-              —
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); appWindow?.toggleMaximize(); }} 
-              onMouseDown={(e) => e.stopPropagation()}
-              className="window-control-btn no-drag"
-              title="הגדל/הקטן"
-            >
-              □
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); appWindow?.close(); }} 
-              onMouseDown={(e) => e.stopPropagation()}
-              className="window-control-btn close no-drag"
-              title="סגור"
-            >
-              ✕
-            </button>
-          </div>
-        )}
-      </header>
+          {/* צד שמאל - כפתורי שליטה (סגירה, הגדלה ומזעור) */}
+          {isTauri && (
+            <div className="titlebar-right" style={{ display: "flex", gap: "2px", WebkitAppRegion: "no-drag" } as any}>
+              <button
+                onClick={(e: any) => { e.stopPropagation(); appWindow?.minimize(); }}
+                onMouseDown={(e: any) => e.stopPropagation()}
+                className="window-control-btn no-drag"
+                style={{ WebkitAppRegion: "no-drag" } as any}
+                title="מזער"
+              >
+                —
+              </button>
+              <button
+                onClick={(e: any) => { e.stopPropagation(); appWindow?.toggleMaximize(); }}
+                onMouseDown={(e: any) => e.stopPropagation()}
+                className="window-control-btn no-drag"
+                style={{ WebkitAppRegion: "no-drag" } as any}
+                title="הגדל/הקטן"
+              >
+                □
+              </button>
+              <button
+                onClick={(e: any) => { e.stopPropagation(); appWindow?.close(); }}
+                onMouseDown={(e: any) => e.stopPropagation()}
+                className="window-control-btn close no-drag"
+                style={{ WebkitAppRegion: "no-drag" } as any}
+                title="סגור"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+        </header>
 
-        <div style={{ 
-          padding: "50px", 
-          textAlign: "center", 
-          backgroundColor: "#1a0000", 
+        <div style={{
+          padding: "50px",
+          textAlign: "center",
+          backgroundColor: "#1a0000",
           flex: 1,
           display: "flex",
           flexDirection: "column",
@@ -1024,56 +1017,56 @@ export default function AppShell() {
           color: "white",
           fontFamily: "Inter, sans-serif"
         }}>
-        <AlertTriangle size={80} color="#ff4444" style={{ marginBottom: "20px" }} />
-        <h1 style={{ fontSize: "32px", marginBottom: "16px" }}>⚠️ אין הרשאות מנהל</h1>
-        <p style={{ fontSize: "18px", maxWidth: "600px", lineHeight: "1.6", color: "#cccccc" }}>
-          כדי לקרוא נתונים מכוננים פיזיים ולבצע פעולות שחזור, PhoenixRecover חייבת לרוץ עם הרשאות מנהל (Administrator).
-        </p>
-        <div style={{ 
-          marginTop: "30px", 
-          padding: "20px", 
-          backgroundColor: "rgba(255,255,255,0.05)", 
-          borderRadius: "12px",
-          textAlign: "right"
-        }} dir="rtl">
-          <p><strong>איך מסדרים את זה?</strong></p>
-          <ol style={{ marginTop: "10px", paddingRight: "20px" }}>
-            <li>סגור את התוכנה לחלוטין.</li>
-            <li>לחץ על האייקון של התוכנה עם המקש הימני בעכבר.</li>
-            <li>בחר באפשרות <strong>"הפעל כמנהל" (Run as Administrator)</strong>.</li>
-          </ol>
+          <AlertTriangle size={80} color="#ff4444" style={{ marginBottom: "20px" }} />
+          <h1 style={{ fontSize: "32px", marginBottom: "16px" }}>⚠️ אין הרשאות מנהל</h1>
+          <p style={{ fontSize: "18px", maxWidth: "600px", lineHeight: "1.6", color: "#cccccc" }}>
+            כדי לקרוא נתונים מכוננים פיזיים ולבצע פעולות שחזור, PhoenixRecover חייבת לרוץ עם הרשאות מנהל (Administrator).
+          </p>
+          <div style={{
+            marginTop: "30px",
+            padding: "20px",
+            backgroundColor: "rgba(255,255,255,0.05)",
+            borderRadius: "12px",
+            textAlign: "right"
+          }} dir="rtl">
+            <p><strong>איך מסדרים את זה?</strong></p>
+            <ol style={{ marginTop: "10px", paddingRight: "20px" }}>
+              <li>סגור את התוכנה לחלוטין.</li>
+              <li>לחץ על האייקון של התוכנה עם המקש הימני בעכבר.</li>
+              <li>בחר באפשרות <strong>"הפעל כמנהל" (Run as Administrator)</strong>.</li>
+            </ol>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              marginTop: "40px",
+              padding: "12px 24px",
+              backgroundColor: "#ff4444",
+              border: "none",
+              borderRadius: "8px",
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer"
+            }}
+          >
+            נסה שוב
+          </button>
         </div>
-        <button 
-          onClick={() => window.location.reload()} 
-          style={{ 
-            marginTop: "40px", 
-            padding: "12px 24px", 
-            backgroundColor: "#ff4444", 
-            border: "none", 
-            borderRadius: "8px", 
-            color: "white", 
-            fontWeight: "bold",
-            cursor: "pointer"
-          }}
-        >
-          נסה שוב
-        </button>
       </div>
-    </div>
     );
   }
 
   return (
     <div className="app-shell">
       {/* שורת כותרת מותאמת אישית (Frameless Titlebar) */}
-      <header 
-        data-tauri-drag-region 
+      <header
+        data-tauri-drag-region
         className="custom-titlebar"
-        style={{ 
-          backgroundColor: "var(--bg-darker)", 
-          padding: "8px 15px", 
-          borderBottom: "1px solid var(--border)", 
-          display: "flex", 
+        style={{
+          backgroundColor: "var(--bg-darker)",
+          padding: "8px 15px",
+          borderBottom: "1px solid var(--border)",
+          display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           userSelect: "none",
@@ -1091,27 +1084,30 @@ export default function AppShell() {
 
         {/* צד שמאל - כפתורי שליטה (סגירה, הגדלה ומזעור) */}
         {isTauri && (
-          <div className="titlebar-right no-drag" data-tauri-drag-region={false} style={{ display: "flex", gap: "2px" }}>
-            <button 
-              onClick={(e) => { e.stopPropagation(); appWindow?.minimize(); }} 
-              onMouseDown={(e) => e.stopPropagation()}
+          <div className="titlebar-right" style={{ display: "flex", gap: "2px", WebkitAppRegion: "no-drag" } as any}>
+            <button
+              onClick={(e: any) => { e.stopPropagation(); appWindow?.minimize(); }}
+              onMouseDown={(e: any) => e.stopPropagation()}
               className="window-control-btn no-drag"
+              style={{ WebkitAppRegion: "no-drag" } as any}
               title="מזער"
             >
               —
             </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); appWindow?.toggleMaximize(); }} 
-              onMouseDown={(e) => e.stopPropagation()}
+            <button
+              onClick={(e: any) => { e.stopPropagation(); appWindow?.toggleMaximize(); }}
+              onMouseDown={(e: any) => e.stopPropagation()}
               className="window-control-btn no-drag"
+              style={{ WebkitAppRegion: "no-drag" } as any}
               title="הגדל/הקטן"
             >
               □
             </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); appWindow?.close(); }} 
-              onMouseDown={(e) => e.stopPropagation()}
+            <button
+              onClick={(e: any) => { e.stopPropagation(); appWindow?.close(); }}
+              onMouseDown={(e: any) => e.stopPropagation()}
               className="window-control-btn close no-drag"
+              style={{ WebkitAppRegion: "no-drag" } as any}
               title="סגור"
             >
               ✕
@@ -1141,12 +1137,12 @@ export default function AppShell() {
       <AnimatePresence>
         {isSettingsOpen && (
           <div className="modal-overlay" onClick={() => setIsSettingsOpen(false)}>
-            <motion.div 
+            <motion.div
               className="modal-content"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: any) => e.stopPropagation()}
               dir="rtl"
             >
               <div className="modal-header">
@@ -1159,21 +1155,21 @@ export default function AppShell() {
               <div className="settings-section">
                 <label>עיצוב הממשק (Theme)</label>
                 <div className="theme-options">
-                  <button 
+                  <button
                     className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
                     onClick={() => setTheme('light')}
                   >
                     <Sun size={20} />
                     <span>בהיר</span>
                   </button>
-                  <button 
+                  <button
                     className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
                     onClick={() => setTheme('dark')}
                   >
                     <Moon size={20} />
                     <span>כהה</span>
                   </button>
-                  <button 
+                  <button
                     className={`theme-btn ${theme === 'system' ? 'active' : ''}`}
                     onClick={() => setTheme('system')}
                   >

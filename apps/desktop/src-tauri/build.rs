@@ -1,7 +1,8 @@
 fn main() {
-    #[cfg(windows)]
-    {
-        // embed_resource::compile("resources.rc", embed_resource::NONE);
-    }
-    tauri_build::build()
+    let mut windows_attributes = tauri_build::WindowsAttributes::new();
+    windows_attributes = windows_attributes.app_manifest(include_str!("admin.manifest"));
+
+    tauri_build::try_build(
+        tauri_build::Attributes::new().windows_attributes(windows_attributes)
+    ).expect("failed to run tauri-build");
 }
